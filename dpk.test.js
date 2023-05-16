@@ -35,4 +35,14 @@ describe("deterministicPartitionKey", () => {
     const sut = deterministicPartitionKey(event);
     expect(sut).toEqual('{"key":"value"}');
   });
+
+  test("Should return the hash of candidate when it exceeds max length", () => {
+    const longKey = "a".repeat(300);
+    const result = deterministicPartitionKey({ partitionKey: longKey });
+    const expectedHash = crypto
+      .createHash("sha3-512")
+      .update(longKey)
+      .digest("hex");
+    expect(result).toEqual(expectedHash);
+  });
 });
