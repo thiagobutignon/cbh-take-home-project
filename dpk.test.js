@@ -1,4 +1,4 @@
-const { deterministicPartitionKey } = require("./dpk");
+const { deterministicPartitionKey, isString, stringify, createHashAdapter } = require("./dpk");
 const crypto = require("crypto");
 
 describe("deterministicPartitionKey", () => {
@@ -38,11 +38,11 @@ describe("deterministicPartitionKey", () => {
 
   test("Should return the hash of candidate when it exceeds max length", () => {
     const longKey = "a".repeat(300);
-    const result = deterministicPartitionKey({ partitionKey: longKey });
+    const sut = deterministicPartitionKey({ partitionKey: longKey });
     const expectedHash = crypto
       .createHash("sha3-512")
       .update(longKey)
       .digest("hex");
-    expect(result).toEqual(expectedHash);
+    expect(sut).toEqual(expectedHash);
   });
 });
