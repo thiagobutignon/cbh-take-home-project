@@ -22,11 +22,17 @@ describe("deterministicPartitionKey", () => {
 
   test("Should return the hash of the event as the partition key when event has no partitionKey", () => {
     const event = { key: "value" };
-    const result = deterministicPartitionKey(event);
+    const sut = deterministicPartitionKey(event);
     const expectedHash = crypto
       .createHash("sha3-512")
       .update(JSON.stringify(event))
       .digest("hex");
-    expect(result).toEqual(expectedHash);
+    expect(sut).toEqual(expectedHash);
+  });
+
+  test("Should stringify non-string partition key candidates", () => {
+    const event = { partitionKey: { key: "value" } };
+    const sut = deterministicPartitionKey(event);
+    expect(sut).toEqual('{"key":"value"}');
   });
 });
