@@ -18,24 +18,18 @@ function createHashAdapter(value) {
 exports.deterministicPartitionKey = (event) => {
   const TRIVIAL_PARTITION_KEY = "0";
   const MAX_PARTITION_KEY_LENGTH = 256;
-  let candidate;
+  let candidate = TRIVIAL_PARTITION_KEY;
 
-  if (event) {
-    if (event.partitionKey) {
-      candidate = event.partitionKey;
-    } else {
-      const data = stringify(event);
-      candidate = createHashAdapter(data);
-    }
+  if (event && event.partitionKey) {
+    candidate = stringify(event.partitionKey);
+  } else if (event) {
+    const data = stringify(event);
+    candidate = createHashAdapter(data);
   }
 
-  if (candidate) {
-      candidate = stringify(candidate);
-  } else {
-    candidate = TRIVIAL_PARTITION_KEY;
-  }
   if (candidate.length > MAX_PARTITION_KEY_LENGTH) {
     candidate = createHashAdapter(candidate);
   }
+  
   return candidate;
 };
