@@ -9,3 +9,10 @@ You've been asked to refactor the function `deterministicPartitionKey` in [`dpk.
 You will be graded on the exhaustiveness and quality of your unit tests, the depth of your refactor, and the level of insight into your thought process provided by the written explanation.
 
 ## Your Explanation Here
+- I have created several helper functions that can be reused whenever new features need to be implemented. Here are a few examples:
+- `isString`: This function helps determine if a value is of the string type. It eliminates the need for unnecessary type checks.
+
+- `stringify`: This function handles the conversion of values to a string using `JSON.stringify`. It ensures consistency when generating the partition key.
+
+- `createHashAdapter`: This function abstracts the hashing logic, making it easier to understand and modify if necessary. I have implemented two design patterns here: the Factory design pattern and the Adapter pattern. The Factory pattern ensures that the calls related to the crypto library are instantiated only once, while the Adapter pattern allows for easy replacement of this library in the future. JavaScript and frameworks/packages tend to evolve rapidly, so having this flexibility is valuable.
+- In the end, I have removed some unnecessary logic related to the `if` conditions. The code was difficult to read and understand, as it was redundantly checking validations in certain cases.
