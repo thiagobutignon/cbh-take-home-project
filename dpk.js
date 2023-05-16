@@ -24,15 +24,13 @@ exports.deterministicPartitionKey = (event) => {
     if (event.partitionKey) {
       candidate = event.partitionKey;
     } else {
-      const data = JSON.stringify(event);
+      const data = stringify(event);
       candidate = createHashAdapter(data);
     }
   }
 
   if (candidate) {
-    if (typeof candidate !== "string") {
-      candidate = JSON.stringify(candidate);
-    }
+      candidate = stringify(candidate);
   } else {
     candidate = TRIVIAL_PARTITION_KEY;
   }
